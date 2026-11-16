@@ -698,7 +698,7 @@ function rowHtml(c) {
 
 /* ---------------- 通用弹层 ---------------- */
 
-function modal({ title, body, footer = '', width = 760 }) {
+function modal({ title, body, footer = '', width = 760, backdropClose = true }) {
   const mask = document.createElement('div');
   mask.className = 'modal-mask';
   mask.innerHTML = `<div class="modal" style="width:min(${width}px,100%)">
@@ -709,7 +709,7 @@ function modal({ title, body, footer = '', width = 760 }) {
   document.body.appendChild(mask);
   const close = () => mask.remove();
   mask.querySelector('[data-x]').onclick = close;
-  mask.addEventListener('click', e => { if (e.target === mask) close(); });
+  if (backdropClose) mask.addEventListener('click', e => { if (e.target === mask) close(); });
   return { root: mask, close, bodyEl: mask.querySelector('.modal-body') };
 }
 
@@ -761,7 +761,8 @@ function carForm(car) {
     footer: `<button class="btn" data-x2>取消</button>
              ${car ? `<button class="btn" id="goImg">图片管理</button>` : ''}
              <button class="btn dark" id="save">保存</button>`,
-    width: 780
+    width: 780,
+    backdropClose: false
   });
   m.root.querySelector('[data-x2]').onclick = m.close;
   if (car && m.root.querySelector('#goImg')) {
